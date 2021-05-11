@@ -25,11 +25,19 @@ function Square (props){
     handleClick(i){
       // Replace this.state.squares, first create a copy, manipulate late it. then update it with setState
       const squares=this.state.squares.slice(); // take a copy of the this.state.squares array
+
+      const winner=calculateWinner(squares) 
+
+      if (winner || squares[i]){
+        // if there is either a winner or squares[i] is no longer null, i.e. 'X', 'O'
+        return; // empty return. don't execute the rest of the function. No for putting code after this into else block. 
+      }
       squares[i]=this.state.xIsNext? 'X': 'O';
       this.setState({
         squares: squares,
         xIsNext: ! this.state.xIsNext // always reverses the xIsNext state.
       });
+      
     }
 
     renderSquare(i) {
