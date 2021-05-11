@@ -18,14 +18,18 @@ function Square (props){
       super(props);
       this.state={ 
         squares: Array(9).fill(null), // create a state key of squares and its value is an array of length 9, filled with nulls.
+        xIsNext: true // X goes firest
       }
     }
 
     handleClick(i){
       // Replace this.state.squares, first create a copy, manipulate late it. then update it with setState
       const squares=this.state.squares.slice(); // take a copy of the this.state.squares array
-      squares[i]='X';
-      this.setState({squares: squares});
+      squares[i]=this.state.xIsNext? 'X': 'O';
+      this.setState({
+        squares: squares,
+        xIsNext: ! this.state.xIsNext // always reverses the xIsNext state.
+      });
     }
 
     renderSquare(i) {
@@ -38,7 +42,7 @@ function Square (props){
     }
   
     render() {
-      const status = 'Next player: X';
+      const status = `Next player: ${this.state.xIsNext? 'X':'O' }`;
   
       return (
         <div>
