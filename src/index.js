@@ -14,13 +14,6 @@ function Square (props){
   }
   
   class Board extends React.Component {
-    constructor(props){
-      super(props);
-      this.state={ 
-        squares: Array(9).fill(null), // create a state key of squares and its value is an array of length 9, filled with nulls.
-        xIsNext: true // X goes firest
-      }
-    }
 
     handleClick(i){
       // Replace this.state.squares, first create a copy, manipulate it. then update it with setState
@@ -43,8 +36,8 @@ function Square (props){
     renderSquare(i) {
       return (
       <Square 
-        value={this.state.squares[i]} 
-        onClick={()=> this.handleClick(i)}  
+        value={this.props.squares[i]} 
+        onClick={()=> this.props.onClick(i)}  
         />
       )
     }
@@ -93,7 +86,7 @@ function Square (props){
         xIsNext: true
       }
     }
-    
+
     render() {
       return (
         <div className="game">
