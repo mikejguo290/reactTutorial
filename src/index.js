@@ -95,7 +95,14 @@ function Square (props){
       
       // map history of moves to React elements representing buttons buttons 
       const moves=history.map((step, move)=>{
-        const desc = move? // move is either or a string rather than squares: board position?
+        /* 
+        array.map(function(currentValue, index, arr), thisValue)
+        step = currentValue, the value in the function iterated over this step. the square
+        move = index , hence move 1, move 2 etc in the descriptions. 
+        we don't really need the step in const moves at all, 
+        alternative way to do it is to have const moves = new Array(history.length).map((value,index)=> index);
+        */
+        const desc = move? 
           'Go to move #' + move :
           'Go to game start';
         return (
