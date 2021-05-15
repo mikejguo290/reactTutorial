@@ -23,7 +23,7 @@ function Square (props){
     }
 
     handleClick(i){
-      // Replace this.state.squares, first create a copy, manipulate late it. then update it with setState
+      // Replace this.state.squares, first create a copy, manipulate it. then update it with setState
       const squares=this.state.squares.slice(); // take a copy of the this.state.squares array
 
       const winner=calculateWinner(squares) 
@@ -82,6 +82,18 @@ function Square (props){
   }
   
   class Game extends React.Component {
+    constructor(props){
+      // store game's history of moves as an array of boards in terms of an array squares that existed as the state on Boards previously. 
+      // Boards will then depict squares with the history. Game component has full control over the Board's data
+      super(props);
+      this.state={
+        history: [{
+          squares: Array(9).fill(null)
+        }],
+        xIsNext: true
+      }
+    }
+    
     render() {
       return (
         <div className="game">
