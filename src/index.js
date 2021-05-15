@@ -58,7 +58,7 @@ function Square (props){
         }],
         xIsNext: true
       }
-      this.handleClick=this.handleClick.bind(this);
+      this.handleClick=this.handleClick.bind(this); //
     }
 
     handleClick(i){
@@ -92,6 +92,18 @@ function Square (props){
       }else{
         status = `Next player: ${this.state.xIsNext? 'X':'O' }`;
       }
+      
+      // map history of moves to React elements representing buttons buttons 
+      const moves=history.map((step, move)=>{
+        const desc = move? // move is either or a string rather than squares: board position?
+          'Go to move #' + move :
+          'Go to game start';
+        return (
+          <li>
+            <button onClick={()=>{this.jumpTo(move)}}>{desc}</button>
+          </li>
+        );
+      });
 
       return (
         <div className="game">
@@ -100,7 +112,7 @@ function Square (props){
           </div>
           <div className="game-info">
             <div>{status}</div>
-            <ol>{/* TODO */}</ol>
+            <ol>{moves}</ol>
           </div>
         </div>
       );
