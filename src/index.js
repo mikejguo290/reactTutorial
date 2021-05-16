@@ -56,42 +56,52 @@ function Square (props){
         history: [{
           squares: Array(9).fill(null)
         }],
+        xIsNext: true,
         stepNumber: 0,
-        xIsNext: true
       }
       this.handleClick=this.handleClick.bind(this); //
     }
     jumpTo(step){
       this.setState({
-        // update both step and xIsNext states.
+        // update both step and xIsNext states. should trigger render method to rerender the whole board. 
+        xIsNext : (step % 2)===0, //if move number is even, then x is next. 
         stepNumber : step,
-        xIsNext : (step % 2)===0 //if move number is even, then x is next. 
       })
     }
 
     handleClick(i){
-      // first create a copy, manipulate it. then update it with setState
-      const history=this.state.history;
+      /* click event handler for squares. 
+      handleClick needs to calculate a winner and set the history state with an updated array with each clicked square, conditional on logic. 
+      It also has to update state stepNumber so the history gets to grow! 
+      */
+
+      // pattern is to first create a copy of the Squares in History, manipulate it. then update it with setState
+      
+      // want the history here to be linked to step. so if step< prev history.length, history shrinks
+      const history=this.state.history.slice(0,this.state.stepNumber+1) // include stepNumber in array as both stepNumber and array are 0 indexed.
+      //const history=this.state.history;
       const current=history[history.length-1];
       const squares=current.squares.slice(); // take a copy of the this.state.history[history.length-1].squares array
-
+       
       const winner=calculateWinner(squares) 
-
       if (winner || squares[i]){
         // if there is either a winner or squares[i] is no longer null, i.e. 'X', 'O'
         return; // empty return. don't execute the rest of the function. No for putting code after this into else block. 
       }
+
       squares[i]=this.state.xIsNext? 'X': 'O';
+
       this.setState({
         history: history.concat([{squares: squares}]), // use history.concat([array]) instead of push to create a new array! keep it pure. 
-        xIsNext: ! this.state.xIsNext // always reverses the xIsNext state.
+        xIsNext: ! this.state.xIsNext, // always reverses the xIsNext state.
+        stepNumber: history.length, // would this.state.stepNumber+1 do? is history.length more efficient?
       });
-      
+      console.log(this.state.history);  
     }
 
     render() {
       const history=this.state.history;
-      const current=history[history.length-1] //current board position
+      const current=history[history.length-1]; //current board position
       const winner=calculateWinner(current.squares);
 
       let status;
@@ -113,6 +123,8 @@ function Square (props){
         Whenever one is building dynamic lists, one should assign proper keys to list items to help React keep track of item updates.
         That is, the key should be unique for each item in the list.
         Furthermore, it should not be based on index, which is the default if key property is not assigned. This will allow it to track reorderings, additions etc in the rendered list. 
+        
+        history -> derive from history index -> jumpTo(move) event handler -> updates state's stepNumber
         */
         const desc = move? 
           'Go to move #' + move :
