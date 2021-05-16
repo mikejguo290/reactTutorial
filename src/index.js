@@ -56,9 +56,17 @@ function Square (props){
         history: [{
           squares: Array(9).fill(null)
         }],
+        stepNumber: 0,
         xIsNext: true
       }
       this.handleClick=this.handleClick.bind(this); //
+    }
+    jumpTo(step){
+      this.setState({
+        // update both step and xIsNext states.
+        stepNumber : step,
+        xIsNext : (step % 2)===0 //if move number is even, then x is next. 
+      })
     }
 
     handleClick(i){
@@ -101,12 +109,16 @@ function Square (props){
         move = index , hence move 1, move 2 etc in the descriptions. 
         we don't really need the step in const moves at all, 
         alternative way to do it is to have const moves = new Array(history.length).map((value,index)=> index);
+
+        Whenever one is building dynamic lists, one should assign proper keys to list items to help React keep track of item updates.
+        That is, the key should be unique for each item in the list.
+        Furthermore, it should not be based on index, which is the default if key property is not assigned. This will allow it to track reorderings, additions etc in the rendered list. 
         */
         const desc = move? 
           'Go to move #' + move :
           'Go to game start';
         return (
-          <li>
+          <li key={move}>
             <button onClick={()=>{this.jumpTo(move)}}>{desc}</button>
           </li>
         );
