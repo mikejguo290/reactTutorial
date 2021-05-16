@@ -101,7 +101,9 @@ function Square (props){
 
     render() {
       const history=this.state.history;
-      const current=history[history.length-1]; //current board position
+      const current=history[this.state.stepNumber]; 
+      /* update render method so a previous board position can be rendered when jumpTo() is called.
+       buggy otherwise! clicking jumpto then handle click can erase last move!. */
       const winner=calculateWinner(current.squares);
 
       let status;
